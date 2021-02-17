@@ -11,9 +11,11 @@ TypeScript solution for Google Hash Code 2021 practice round.
 
 In the project directory, you can run:
 
-### `deno run src/main.ts`
+### `deno run --allow-read=input src/main.ts input/a_example`
 
-Runs the main program.
+Runs the main program with the example input file.
+
+**Note:** You can also allow all permissions with `deno run -A src/main.ts input/a_example`
 
 ### `deno test`
 
