@@ -52,12 +52,29 @@ while (remainingPizzaCount >= minTeamSize) {
   }
 }
 
+const scores: number[] = [];
+
+for (const delivery of deliveries) {
+  const ingredients = new Set();
+  for (const pizza of delivery.slice(1)) {
+    for (const ingredient of ingredientsByPizza[pizza]) {
+      ingredients.add(ingredient);
+    }
+  }
+  const score = ingredients.size * ingredients.size;
+  scores.push(score);
+}
+
 console.log(
   "Deliveries:",
-  deliveries.map((delivery) =>
-    `Team of ${delivery[0]}: ${delivery.slice(1).join(" ")}`
+  deliveries.map((delivery, i) =>
+    `Team of ${delivery[0]}: ${delivery.slice(1).join(" ")} (score ${
+      scores[i]
+    })`
   ),
 );
+
+console.log("Total score:", scores.reduce((sum, score) => sum + score, 0));
 
 function shuffle(a: any[]) {
   var j, x, i;
