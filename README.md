@@ -17,9 +17,11 @@ Runs the main program with the example input file.
 
 **Note:** You can also allow all permissions with `deno run -A src/main.ts input/a_example`
 
-### `deno test`
+### `deno test --allow-read=input`
 
 Runs all tests in the current directory and all sub-directories.
+
+**Note:** You can also allow all permissions with `deno test -A`
 
 ### `deno fmt`
 

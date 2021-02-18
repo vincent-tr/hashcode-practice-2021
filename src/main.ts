@@ -1,3 +1,9 @@
+import { readDataset } from "./dataset.ts";
+import { shuffle } from "./helpers/array_helpers.ts";
+
+const dataset = await readDataset(Deno.args[0]);
+console.log("Dataset:", dataset);
+
 const teamSizes = [2, 3, 4];
 
 const [inputFilePath] = Deno.args;
@@ -75,14 +81,3 @@ console.log(
 );
 
 console.log("Total score:", scores.reduce((sum, score) => sum + score, 0));
-
-function shuffle(a: any[]) {
-  var j, x, i;
-  for (i = a.length - 1; i > 0; i--) {
-    j = Math.floor(Math.random() * (i + 1));
-    x = a[i];
-    a[i] = a[j];
-    a[j] = x;
-  }
-  return a;
-}
