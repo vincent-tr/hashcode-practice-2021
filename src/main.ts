@@ -1,5 +1,5 @@
 import { readDataset } from "./dataset.ts";
-import { shuffle } from "./helpers/array_helpers.ts";
+import { shuffle } from "./helpers/array.ts";
 
 const dataset = await readDataset(Deno.args[0]);
 console.log("Dataset:", dataset);
