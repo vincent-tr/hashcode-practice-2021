@@ -1,3 +1,4 @@
+import { MultiProgressBar } from "https://deno.land/x/progress@v1.2.3/mod.ts";
 import {
   countTotalIngredients,
   countTotalPizzas,
@@ -5,6 +6,48 @@ import {
   readDataset,
 } from "./dataset.ts";
 import { shuffle } from "./helpers/array.ts";
+
+if (Deno.args.length === 0) {
+  const stats = [];
+  for await (const inputFile of Deno.readDir("input")) {
+    const dataset = await readDataset(`input/${inputFile.name}`);
+    stats.push({
+      "Input": inputFile.name,
+      "Teams": countTotalTeams(dataset),
+      "Pizzas": countTotalPizzas(dataset),
+      "Ingredients": countTotalIngredients(dataset),
+    });
+  }
+  stats.sort(({ "Input": a }, { "Input": b }) => a.localeCompare(b));
+  console.table(stats);
+
+  const maxInputFileNameLength = Math.max(
+    ...stats.map((stat) => stat.Input.length),
+  );
+  for (const stat of stats) {
+    stat.Input = stat.Input.padEnd(maxInputFileNameLength);
+  }
+  const progressBars = new MultiProgressBar({
+    complete: "#",
+    incomplete: "-",
+    width: 50 - maxInputFileNameLength,
+    display: ":text [:bar] :percent :time :completed/:total",
+  });
+  for (let i = 0; i < 100000; i += 500) {
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    const progress = [];
+    for (const stat of stats) {
+      progress.push({
+        completed: Math.min(i, stat.Pizzas),
+        total: stat.Pizzas,
+        text: stat.Input,
+      });
+    }
+    progressBars.render(progress);
+  }
+  console.log();
+  Deno.exit(0);
+}
 
 const dataset = await readDataset(Deno.args[0]);
 
