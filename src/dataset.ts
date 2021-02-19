@@ -1,9 +1,16 @@
-import { parsePizza, Pizza } from "./pizza.ts";
-import { parseTeams, Team } from "./team.ts";
-
 export type Dataset = {
   teams: Team[];
   pizzas: Pizza[];
+};
+
+export type Team = {
+  peopleCount: number;
+  teamCount: number;
+};
+
+export type Pizza = {
+  id: number;
+  ingredients: string[];
 };
 
 export async function readDataset(inputFilePath: string): Promise<Dataset> {
@@ -16,5 +23,22 @@ export async function readDataset(inputFilePath: string): Promise<Dataset> {
   return {
     teams: parseTeams(teamsLine),
     pizzas: pizzasLines.map(parsePizza),
+  };
+}
+
+export function parseTeams(line: string): Team[] {
+  return line.split(" ")
+    .slice(1)
+    .map(Number)
+    .map((teamCount, i) => ({
+      peopleCount: i + 2,
+      teamCount,
+    }));
+}
+
+export function parsePizza(line: string, pizzaId: number): Pizza {
+  return {
+    id: pizzaId,
+    ingredients: line.split(" ").slice(1),
   };
 }
