@@ -5,10 +5,11 @@ import {
   parseTeams,
   Pizza,
   readDataset,
+  sanitize,
   Team,
 } from "./dataset.ts";
 
-Deno.test("parses teams", () => {
+Deno.test("parseTeams", () => {
   const teams = parseTeams("5 1 2 3");
   assertEquals(teams, [
     { peopleCount: 2, teamCount: 1 },
@@ -17,7 +18,7 @@ Deno.test("parses teams", () => {
   ] as Team[]);
 });
 
-Deno.test("parses pizza", () => {
+Deno.test("parsePizza", () => {
   const pizza = parsePizza("3 onion pepper olive", 0);
   assertEquals(pizza, {
     id: 0,
@@ -25,7 +26,12 @@ Deno.test("parses pizza", () => {
   } as Pizza);
 });
 
-Deno.test("reads dataset", async () => {
+Deno.test("sanitize", () => {
+  const lines = sanitize(["", " a ", " "]);
+  assertEquals(lines, ["a"]);
+});
+
+Deno.test("readDataset", async () => {
   const dataset = await readDataset("input/a_example");
   assertEquals(dataset, {
     teams: [

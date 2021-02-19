@@ -15,11 +15,7 @@ export type Pizza = {
 
 export async function readDataset(inputFilePath: string): Promise<Dataset> {
   const input = await Deno.readTextFile(inputFilePath);
-
-  const [teamsLine, ...pizzasLines] = input.split("\n")
-    .map((line) => line.trim())
-    .filter((line) => !!line);
-
+  const [teamsLine, ...pizzasLines] = sanitize(input.split("\n"));
   return {
     teams: parseTeams(teamsLine),
     pizzas: pizzasLines.map(parsePizza),
@@ -41,4 +37,8 @@ export function parsePizza(line: string, pizzaId: number): Pizza {
     id: pizzaId,
     ingredients: line.split(" ").slice(1),
   };
+}
+
+export function sanitize(lines: string[]): string[] {
+  return lines.map((line) => line.trim()).filter((line) => !!line);
 }
