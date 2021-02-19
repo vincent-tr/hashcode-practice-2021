@@ -27,7 +27,7 @@ export async function readDataset(inputFilePath: string): Promise<Dataset> {
   };
 }
 
-export function getInfo(dataset: Dataset) {
+export function getDatasetInfo(dataset: Dataset) {
   return {
     "Dataset": dataset.name,
     "Teams": countTotalTeams(dataset),
