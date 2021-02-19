@@ -1,13 +1,8 @@
 import { assertEquals } from "https://deno.land/std@0.87.0/testing/asserts.ts";
-import {
-  countTotalIngredients,
-  countTotalPizzas,
-  countTotalTeams,
-  Dataset,
-  readDataset,
-} from "./dataset.ts";
+import { Dataset, getInfo, readDataset } from "./dataset.ts";
 
 const exampleDataset: Dataset = {
+  name: "a_example",
   teams: [
     { peopleCount: 2, teamCount: 1 },
     { peopleCount: 3, teamCount: 2 },
@@ -23,18 +18,14 @@ const exampleDataset: Dataset = {
 };
 
 Deno.test("readDataset", async () => {
-  const dataset = await readDataset("input/a_example");
-  assertEquals(dataset, exampleDataset);
+  assertEquals(await readDataset("input/a_example"), exampleDataset);
 });
 
-Deno.test("countTotalTeams", () => {
-  assertEquals(countTotalTeams(exampleDataset), 12);
-});
-
-Deno.test("countTotalPizzas", () => {
-  assertEquals(countTotalPizzas(exampleDataset), 5);
-});
-
-Deno.test("countTotalIngredients", () => {
-  assertEquals(countTotalIngredients(exampleDataset), 7);
+Deno.test("getInfo", () => {
+  assertEquals(getInfo(exampleDataset), {
+    "Dataset": "a_example",
+    "Teams": 12,
+    "Pizzas": 5,
+    "Ingredients": 7,
+  });
 });
