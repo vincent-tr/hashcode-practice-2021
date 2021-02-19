@@ -8,7 +8,7 @@ export type Dataset = {
 };
 
 export type Team = {
-  peopleCount: number;
+  personCount: number;
   teamCount: number;
 };
 
@@ -31,6 +31,7 @@ export function getInfo(dataset: Dataset) {
   return {
     "Dataset": dataset.name,
     "Teams": countTotalTeams(dataset),
+    "People": countTotalPeople(dataset),
     "Pizzas": countTotalPizzas(dataset),
     "Ingredients": countTotalIngredients(dataset),
   };
@@ -41,7 +42,7 @@ function parseTeams(line: string): Team[] {
     .slice(1)
     .map(Number)
     .map((teamCount, i) => ({
-      peopleCount: i + 2,
+      personCount: i + 2,
       teamCount,
     }));
 }
@@ -55,7 +56,14 @@ function parsePizza(line: string, pizzaId: number): Pizza {
 
 function countTotalTeams(dataset: Dataset) {
   return dataset.teams.reduce(
-    (count, team) => count + team.peopleCount * team.teamCount,
+    (count, { teamCount }) => count + teamCount,
+    0,
+  );
+}
+
+function countTotalPeople(dataset: Dataset) {
+  return dataset.teams.reduce(
+    (count, { personCount, teamCount }) => count + personCount * teamCount,
     0,
   );
 }

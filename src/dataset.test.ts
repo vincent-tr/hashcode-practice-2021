@@ -4,9 +4,9 @@ import { Dataset, getInfo, readDataset } from "./dataset.ts";
 const exampleDataset: Dataset = {
   name: "a_example",
   teams: [
-    { peopleCount: 2, teamCount: 1 },
-    { peopleCount: 3, teamCount: 2 },
-    { peopleCount: 4, teamCount: 1 },
+    { personCount: 2, teamCount: 1 },
+    { personCount: 3, teamCount: 2 },
+    { personCount: 4, teamCount: 1 },
   ],
   pizzas: [
     { id: 0, ingredients: ["onion", "pepper", "olive"] },
@@ -24,7 +24,8 @@ Deno.test("readDataset", async () => {
 Deno.test("getInfo", () => {
   assertEquals(getInfo(exampleDataset), {
     "Dataset": "a_example",
-    "Teams": 12,
+    "Teams": 4,
+    "People": 12,
     "Pizzas": 5,
     "Ingredients": 7,
   });
