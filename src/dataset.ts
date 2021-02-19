@@ -22,7 +22,11 @@ export async function readDataset(inputFilePath: string): Promise<Dataset> {
   };
 }
 
-export function parseTeams(line: string): Team[] {
+function sanitize(lines: string[]): string[] {
+  return lines.map((line) => line.trim()).filter((line) => !!line);
+}
+
+function parseTeams(line: string): Team[] {
   return line.split(" ")
     .slice(1)
     .map(Number)
@@ -32,13 +36,9 @@ export function parseTeams(line: string): Team[] {
     }));
 }
 
-export function parsePizza(line: string, pizzaId: number): Pizza {
+function parsePizza(line: string, pizzaId: number): Pizza {
   return {
     id: pizzaId,
     ingredients: line.split(" ").slice(1),
   };
-}
-
-export function sanitize(lines: string[]): string[] {
-  return lines.map((line) => line.trim()).filter((line) => !!line);
 }

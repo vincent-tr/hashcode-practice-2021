@@ -1,35 +1,5 @@
 import { assertEquals } from "https://deno.land/std@0.87.0/testing/asserts.ts";
-import {
-  Dataset,
-  parsePizza,
-  parseTeams,
-  Pizza,
-  readDataset,
-  sanitize,
-  Team,
-} from "./dataset.ts";
-
-Deno.test("parseTeams", () => {
-  const teams = parseTeams("5 1 2 3");
-  assertEquals(teams, [
-    { peopleCount: 2, teamCount: 1 },
-    { peopleCount: 3, teamCount: 2 },
-    { peopleCount: 4, teamCount: 3 },
-  ] as Team[]);
-});
-
-Deno.test("parsePizza", () => {
-  const pizza = parsePizza("3 onion pepper olive", 0);
-  assertEquals(pizza, {
-    id: 0,
-    ingredients: ["onion", "pepper", "olive"],
-  } as Pizza);
-});
-
-Deno.test("sanitize", () => {
-  const lines = sanitize(["", " a ", " "]);
-  assertEquals(lines, ["a"]);
-});
+import { Dataset, readDataset } from "./dataset.ts";
 
 Deno.test("readDataset", async () => {
   const dataset = await readDataset("input/a_example");
