@@ -1,3 +1,5 @@
+import { trimLines } from "./helpers/string.ts";
+
 export type Dataset = {
   teams: Team[];
   pizzas: Pizza[];
@@ -15,7 +17,7 @@ export type Pizza = {
 
 export async function readDataset(inputFilePath: string): Promise<Dataset> {
   const input = await Deno.readTextFile(inputFilePath);
-  const [teamsLine, ...pizzasLines] = sanitize(input.split("\n"));
+  const [teamsLine, ...pizzasLines] = trimLines(input.split("\n"));
   return {
     teams: parseTeams(teamsLine),
     pizzas: pizzasLines.map(parsePizza),
@@ -38,10 +40,6 @@ export function countTotalIngredients(dataset: Dataset) {
     pizza.ingredients.forEach((ingredient) => ingredients.add(ingredient));
     return ingredients;
   }, new Set<string>()).size;
-}
-
-function sanitize(lines: string[]): string[] {
-  return lines.map((line) => line.trim()).filter((line) => !!line);
 }
 
 function parseTeams(line: string): Team[] {
