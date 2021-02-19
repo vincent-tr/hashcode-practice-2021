@@ -1,8 +1,16 @@
-import { readDataset } from "./dataset.ts";
+import {
+  countTotalIngredients,
+  countTotalPizzas,
+  countTotalTeams,
+  readDataset,
+} from "./dataset.ts";
 import { shuffle } from "./helpers/array.ts";
 
 const dataset = await readDataset(Deno.args[0]);
-console.log("Dataset:", dataset);
+
+console.log(countTotalTeams(dataset), "total teams");
+console.log(countTotalPizzas(dataset), "total pizzas");
+console.log(countTotalIngredients(dataset), "total ingredients");
 
 const teamSizes = [2, 3, 4];
 

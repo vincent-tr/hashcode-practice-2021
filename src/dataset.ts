@@ -22,6 +22,24 @@ export async function readDataset(inputFilePath: string): Promise<Dataset> {
   };
 }
 
+export function countTotalTeams(dataset: Dataset) {
+  return dataset.teams.reduce(
+    (count, team) => count + team.peopleCount * team.teamCount,
+    0,
+  );
+}
+
+export function countTotalPizzas(dataset: Dataset) {
+  return dataset.pizzas.length;
+}
+
+export function countTotalIngredients(dataset: Dataset) {
+  return dataset.pizzas.reduce((ingredients, pizza) => {
+    pizza.ingredients.forEach((ingredient) => ingredients.add(ingredient));
+    return ingredients;
+  }, new Set<string>()).size;
+}
+
 function sanitize(lines: string[]): string[] {
   return lines.map((line) => line.trim()).filter((line) => !!line);
 }
