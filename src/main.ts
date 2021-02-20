@@ -24,11 +24,16 @@ console.table(submissions.map(getSubmissionInfo));
 function printProgress() {
   console.clear();
   console.table(datasetInfos);
+  const maxNameLength = Math.max(
+    ...allProgress.map((({ name }) => name.length)),
+  );
   for (const { name, progress, total } of allProgress) {
-    if (progress === total) {
-      console.log(name, "done");
-    } else {
-      console.log(name, progress, total);
-    }
+    const percent = Math.floor(100 * progress / total);
+    console.log(
+      name.padEnd(maxNameLength, " "),
+      `${progress}/${total === Infinity ? "" : total}`.padStart(15, " "),
+      `[${"#".repeat(percent).padEnd(100, "-")}]`,
+      `${percent}%`.toString().padStart(4, " "),
+    );
   }
 }

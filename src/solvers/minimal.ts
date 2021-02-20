@@ -20,7 +20,8 @@ self.onmessage = async ({ data: dataset }: MessageEvent<Dataset>) => {
   for (const { personCount, teamCount } of teams) {
     for (
       let teamIdx = 0;
-      teamIdx < teamCount && pizzaIdx < pizzas.length;
+      teamIdx < teamCount && pizzaIdx < pizzas.length &&
+      personCount <= pizzas.length - pizzaIdx;
       teamIdx++
     ) {
       const pizzasToDeliver: Pizza[] = [];
