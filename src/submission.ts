@@ -11,7 +11,7 @@ export type Delivery = {
 };
 
 export async function writeSubmission(submission: Submission) {
-  const submissionDir = `submission/${submission.name}`;
+  const submissionDir = getSubmissionDirectory(submission);
   try {
     await Deno.mkdir(submissionDir, { recursive: true });
   } catch {
@@ -26,11 +26,17 @@ export async function writeSubmission(submission: Submission) {
 }
 
 export function getSubmissionInfo(submission: Submission) {
+  const score = getSubmissionScore(submission);
   return {
-    "Submission": submission.name,
+    "Dataset": `${submission.name}`,
     "Deliveries": submission.deliveries.length,
-    "Score": getSubmissionScore(submission),
+    "Score": score,
+    "Submission file": `${getSubmissionDirectory(submission)}/${score}.out`,
   };
+}
+
+function getSubmissionDirectory({ name }: Submission): string {
+  return `submission/${name}`;
 }
 
 function getSubmissionScore({ deliveries }: Submission): number {

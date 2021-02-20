@@ -37,6 +37,31 @@ export function getDatasetInfo(dataset: Dataset) {
   };
 }
 
+export function countTotalTeams({ teams }: Dataset) {
+  return teams.reduce(
+    (count, { teamCount }) => count + teamCount,
+    0,
+  );
+}
+
+export function countTotalPeople({ teams }: Dataset) {
+  return teams.reduce(
+    (count, { personCount, teamCount }) => count + personCount * teamCount,
+    0,
+  );
+}
+
+export function countTotalPizzas({ pizzas }: Dataset) {
+  return pizzas.length;
+}
+
+export function countTotalIngredients({ pizzas }: Dataset) {
+  return pizzas.reduce((ingredients, pizza) => {
+    pizza.ingredients.forEach((ingredient) => ingredients.add(ingredient));
+    return ingredients;
+  }, new Set<string>()).size;
+}
+
 function parseTeams(line: string): Team[] {
   return line.split(" ")
     .slice(1)
@@ -52,29 +77,4 @@ function parsePizza(line: string, pizzaId: number): Pizza {
     id: pizzaId,
     ingredients: line.split(" ").slice(1),
   };
-}
-
-function countTotalTeams({ teams }: Dataset) {
-  return teams.reduce(
-    (count, { teamCount }) => count + teamCount,
-    0,
-  );
-}
-
-function countTotalPeople({ teams }: Dataset) {
-  return teams.reduce(
-    (count, { personCount, teamCount }) => count + personCount * teamCount,
-    0,
-  );
-}
-
-function countTotalPizzas({ pizzas }: Dataset) {
-  return pizzas.length;
-}
-
-function countTotalIngredients({ pizzas }: Dataset) {
-  return pizzas.reduce((ingredients, pizza) => {
-    pizza.ingredients.forEach((ingredient) => ingredients.add(ingredient));
-    return ingredients;
-  }, new Set<string>()).size;
 }
