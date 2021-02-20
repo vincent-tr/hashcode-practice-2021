@@ -25,8 +25,9 @@ export const exampleSubmission: Submission = {
 
 Deno.test("getSubmissionInfo", () => {
   assertEquals(getSubmissionInfo(exampleSubmission), {
-    "Submission": "a_example",
+    "Dataset": "a_example",
     "Deliveries": 2,
     "Score": 65,
+    "Submission file": "submission/a_example/65.out",
   });
 });
