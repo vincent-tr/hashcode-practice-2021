@@ -6,27 +6,34 @@ console.table(datasets.map(getDatasetInfo));
 
 const submissions: Submission[] = [];
 for (const { name, teams, pizzas } of datasets) {
-  let pizza = 0;
+  let pizzaIdx = 0;
   const deliveries: Delivery[] = [];
   for (const { personCount, teamCount } of teams) {
     for (
-      let team = 0;
-      team < teamCount && pizza < pizzas.length;
-      team++
+      let teamIdx = 0;
+      teamIdx < teamCount && pizzaIdx < pizzas.length;
+      teamIdx++
     ) {
       const pizzasToDeliver: Pizza[] = [];
+      const ingredients = new Set<string>();
       for (
-        let person = 0;
-        person < personCount && pizza < pizzas.length;
-        person++
+        let personIdx = 0;
+        personIdx < personCount && pizzaIdx < pizzas.length;
+        personIdx++
       ) {
-        pizzasToDeliver.push(pizzas[pizza++]);
+        const pizza = pizzas[pizzaIdx++];
+        pizzasToDeliver.push(pizza);
+        for (const ingredient of pizza.ingredients) {
+          ingredients.add(ingredient);
+        }
       }
       if (pizzasToDeliver.length === personCount) {
         deliveries.push({
-          score: 0, // TODO Compute score
+          score: ingredients.size * ingredients.size,
           pizzas: pizzasToDeliver,
         });
+      } else {
+        pizzaIdx -= pizzasToDeliver.length;
       }
     }
   }
