@@ -11,7 +11,7 @@ TypeScript solution for Google Hash Code 2021 practice round.
 
 In the project directory, you can run:
 
-### `deno run --allow-read=input --allow-write=submission src/main.ts input/*`
+### `deno run --allow-read=input,src/solvers --allow-write=submission src/main.ts input/*`
 
 Runs the main program with all the input files.
 

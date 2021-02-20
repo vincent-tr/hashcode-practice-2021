@@ -1,7 +1,7 @@
-import { Dataset, Pizza } from "../dataset.ts";
-import { Delivery, Submission } from "../submission.ts";
+import { Pizza } from "../dataset.ts";
+import { Delivery } from "../submission.ts";
 
-export function solveMinimal({ name, teams, pizzas }: Dataset): Submission {
+self.onmessage = async ({ data: { name, teams, pizzas } }) => {
   let pizzaIdx = 0;
   const deliveries: Delivery[] = [];
   for (const { personCount, teamCount } of teams) {
@@ -17,6 +17,9 @@ export function solveMinimal({ name, teams, pizzas }: Dataset): Submission {
         personIdx < personCount && pizzaIdx < pizzas.length;
         personIdx++
       ) {
+        // Uncomment next line to Simulate long processing
+        // await new Promise((resolve) => setTimeout(resolve, 10));
+
         const pizza = pizzas[pizzaIdx++];
         pizzasToDeliver.push(pizza);
         for (const ingredient of pizza.ingredients) {
@@ -33,5 +36,6 @@ export function solveMinimal({ name, teams, pizzas }: Dataset): Submission {
       }
     }
   }
-  return { name, deliveries };
-}
+  self.postMessage({ name, deliveries });
+  self.close();
+};
