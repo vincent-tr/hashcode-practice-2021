@@ -36,3 +36,28 @@ export function solveWorker(
     progress,
   ];
 }
+
+export function printProgressBars(
+  allProgress: SolverProgress[],
+  startTime: number,
+) {
+  const maxNameLength = Math.max(
+    ...allProgress.map((({ name }) => name.length)),
+  );
+  const elapsedTime = Date.now() - startTime;
+  for (const { name, progress, total } of allProgress) {
+    const progressRatio = progress / total;
+    const remainingSeconds = elapsedTime * (total / progress - 1) / 1000;
+    const progressPercent = Math.floor(100 * progressRatio);
+    console.log(
+      name.padEnd(maxNameLength, " "),
+      `${progress}/${total === Infinity ? "-" : total}`.padStart(15, " "),
+      remainingSeconds === Infinity ? "--:--" : [
+        `${Math.floor(remainingSeconds / 60)}`.padStart(2, "0"),
+        `${Math.floor(remainingSeconds % 60)}`.padStart(2, "0"),
+      ].join(":"),
+      `[${"#".repeat(progressPercent).padEnd(100, "-")}]`,
+      `${progressPercent}%`.toString().padStart(4, " "),
+    );
+  }
+}
