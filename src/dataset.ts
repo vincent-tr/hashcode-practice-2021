@@ -54,26 +54,26 @@ function parsePizza(line: string, pizzaId: number): Pizza {
   };
 }
 
-function countTotalTeams(dataset: Dataset) {
-  return dataset.teams.reduce(
+function countTotalTeams({ teams }: Dataset) {
+  return teams.reduce(
     (count, { teamCount }) => count + teamCount,
     0,
   );
 }
 
-function countTotalPeople(dataset: Dataset) {
-  return dataset.teams.reduce(
+function countTotalPeople({ teams }: Dataset) {
+  return teams.reduce(
     (count, { personCount, teamCount }) => count + personCount * teamCount,
     0,
   );
 }
 
-function countTotalPizzas(dataset: Dataset) {
-  return dataset.pizzas.length;
+function countTotalPizzas({ pizzas }: Dataset) {
+  return pizzas.length;
 }
 
-function countTotalIngredients(dataset: Dataset) {
-  return dataset.pizzas.reduce((ingredients, pizza) => {
+function countTotalIngredients({ pizzas }: Dataset) {
+  return pizzas.reduce((ingredients, pizza) => {
     pizza.ingredients.forEach((ingredient) => ingredients.add(ingredient));
     return ingredients;
   }, new Set<string>()).size;

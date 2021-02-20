@@ -11,14 +11,14 @@ TypeScript solution for Google Hash Code 2021 practice round.
 
 In the project directory, you can run:
 
-### `deno run --allow-read=input src/main.ts input/*`
+### `deno run --allow-read=input --allow-write=submission src/main.ts input/*`
 
 Runs the main program with all the input files.
 
 If you want to run only specific files, you can specify them as last arguments of the command:
 
 ```bash
-deno run --allow-read=input src/main.ts input/a_example input/b_little_bit_of_everything.in
+deno run --allow-read=input --allow-write=submission src/main.ts input/a_example input/b_little_bit_of_everything.in
 ```
 
 **Note:** You can also allow all permissions with `deno run -A src/main.ts input/*`
