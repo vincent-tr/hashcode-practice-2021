@@ -1,7 +1,9 @@
-import { Pizza } from "../dataset.ts";
-import { Delivery } from "../submission.ts";
+import { Dataset, Pizza } from "../dataset.ts";
+import { Delivery, Submission } from "../submission.ts";
 
-self.onmessage = async ({ data: { name, teams, pizzas } }) => {
+self.onmessage = async (
+  { data: { name, teams, pizzas } }: MessageEvent<Dataset>,
+) => {
   let pizzaIdx = 0;
   const deliveries: Delivery[] = [];
   for (const { personCount, teamCount } of teams) {
@@ -36,6 +38,6 @@ self.onmessage = async ({ data: { name, teams, pizzas } }) => {
       }
     }
   }
-  self.postMessage({ name, deliveries });
+  self.postMessage({ name, deliveries } as Submission);
   self.close();
 };

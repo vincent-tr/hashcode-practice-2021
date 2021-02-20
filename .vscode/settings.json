@@ -1,13 +1,11 @@
 {
   "deno.enable": true,
+  "deno.config": "./.vscode/tsconfig.json",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": { "source.organizeImports": true },
   "editor.tabSize": 2,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[typescript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
-  },
-  "deno.import_intellisense_origins": {
-    "https://deno.land": true
   }
 }
