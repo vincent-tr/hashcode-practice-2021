@@ -30,8 +30,8 @@ self.onmessage = async ({ data: dataset }: MessageEvent<Dataset>) => {
         personIdx < personCount && pizzaIdx < pizzas.length;
         personIdx++
       ) {
-        // Uncomment next line to Simulate long processing
-        // await new Promise((resolve) => setTimeout(resolve, 10));
+        // Uncomment next line to simulate long processing
+        // await new Promise((resolve) => setTimeout(resolve));
 
         const pizza = pizzas[pizzaIdx++];
         pizzasToDeliver.push(pizza);

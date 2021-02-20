@@ -7,23 +7,32 @@ export type SolverProgress = {
   total: number;
 };
 
-// TODO Update or remove
-// export function solveWorker(
-//   dataset: Dataset,
-//   solverName: string,
-// ): Promise<Submission> {
-//   const worker = new Worker(
-//     new URL(`../solvers/${solverName}.ts`, import.meta.url).href,
-//     { type: "module" },
-//   );
-//   worker.postMessage(dataset);
-//   return new Promise<Submission>((resolve) => {
-//     worker.onmessage = (e: MessageEvent<SolverProgress | Submission>) => {
-//       if ("progress" in e.data) {
-//         console.log("Progress", e.data.name, e.data.progress, e.data.total);
-//       } else {
-//         resolve(e.data);
-//       }
-//     };
-//   });
-// }
+export function solveWorker(
+  dataset: Dataset,
+  solverName: string,
+): [Promise<Submission>, SolverProgress] {
+  const worker = new Worker(
+    new URL(`../solvers/${solverName}.ts`, import.meta.url).href,
+    { type: "module" },
+  );
+  worker.postMessage(dataset);
+  const progress: SolverProgress = {
+    name: dataset.name,
+    progress: 0,
+    total: Infinity,
+  };
+  return [
+    new Promise<Submission>((resolve) => {
+      worker.onmessage = (e: MessageEvent<SolverProgress | Submission>) => {
+        if ("progress" in e.data) {
+          progress.name = e.data.name;
+          progress.progress = e.data.progress;
+          progress.total = e.data.total;
+        } else {
+          resolve(e.data);
+        }
+      };
+    }),
+    progress,
+  ];
+}
