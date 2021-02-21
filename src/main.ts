@@ -12,7 +12,7 @@ const allProgress: SolverProgress[] = [];
 const intervalId = setInterval(printProgress, 1000);
 const startTime = Date.now();
 const submissions = await Promise.all(datasets.map(async (dataset) => {
-  const [submissionPromise, progress] = solveWorker(dataset, "minimal");
+  const [submissionPromise, progress] = solveWorker(dataset, "greedy");
   allProgress.push(progress);
   const submission = await submissionPromise;
   writeSubmission(submission);
