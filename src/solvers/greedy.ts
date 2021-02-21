@@ -33,9 +33,8 @@ self.onmessage = async ({ data: dataset }: MessageEvent<Dataset>) => {
       ingredients.clear();
       let ingredientCount = 0;
       for (let personIdx = 0; personIdx < personCount && pizzas; personIdx++) {
-        const pizza = pizzas.pizza;
-        pizzasToDeliver.push(pizza);
-        pizzas = pizzas.next;
+        pizzas = deliverPizza(pizzas, ingredients, pizzasToDeliver);
+        const pizza = pizzasToDeliver[pizzasToDeliver.length - 1];
         for (const ingredient of pizza.ingredients) {
           if (!ingredients.has(ingredient)) {
             ingredients.add(ingredient);
@@ -48,10 +47,8 @@ self.onmessage = async ({ data: dataset }: MessageEvent<Dataset>) => {
           score: ingredientCount * ingredientCount,
           pizzas: pizzasToDeliver,
         });
-        if (teamIdx % 10 === 0) {
-          progress.progress += pizzasToDeliver.length;
-          self.postMessage(progress);
-        }
+        progress.progress += pizzasToDeliver.length;
+        self.postMessage(progress);
       } else {
         while (pizzasToDeliver.length) {
           pizzas = {
@@ -74,7 +71,7 @@ type PizzaNode = {
   next: PizzaNode | null;
 };
 
-export function toLinkedList(pizzas: Pizza[]): PizzaNode | null {
+function toLinkedList(pizzas: Pizza[]): PizzaNode | null {
   return pizzas
     // TODO Invert the sort and remove the reverse once greedy works
     .sort((a, b) => b.ingredients.length - a.ingredients.length)
@@ -83,4 +80,39 @@ export function toLinkedList(pizzas: Pizza[]): PizzaNode | null {
       (pizzaNode, pizza) => ({ pizza, next: pizzaNode }),
       null as PizzaNode | null,
     );
+}
+
+function deliverPizza(
+  pizzas: PizzaNode,
+  ingredients: NumberSet,
+  pizzasToDeliver: Pizza[],
+): PizzaNode | null {
+  let bestPizzaPrevious: PizzaNode | null = null;
+  let bestPizza: PizzaNode = null!;
+  let highestNewIngredientCount = -1;
+
+  let previous: PizzaNode | null = null;
+  let current: PizzaNode | null = pizzas;
+  while (current) {
+    let newIngredientCount = 0;
+    for (const ingredient of current.pizza.ingredients) {
+      if (!ingredients.has(ingredient)) {
+        newIngredientCount++;
+      }
+    }
+    if (newIngredientCount > highestNewIngredientCount) {
+      bestPizzaPrevious = previous;
+      bestPizza = current;
+      highestNewIngredientCount = newIngredientCount;
+    }
+    previous = current;
+    current = current.next;
+  }
+  pizzasToDeliver.push(bestPizza.pizza);
+  if (bestPizzaPrevious) {
+    bestPizzaPrevious.next = bestPizza.next;
+    return pizzas;
+  } else {
+    return bestPizza.next;
+  }
 }

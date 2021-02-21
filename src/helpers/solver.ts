@@ -51,11 +51,13 @@ export function printProgressBars(
     const progressPercent = Math.floor(100 * progressRatio);
     console.log(
       name.padEnd(maxNameLength, " "),
-      `${progress}/${total === Infinity ? "-" : total}`.padStart(15, " "),
-      remainingSeconds === Infinity ? "--:--" : [
-        `${Math.floor(remainingSeconds / 60)}`.padStart(2, "0"),
-        `${Math.floor(remainingSeconds % 60)}`.padStart(2, "0"),
-      ].join(":"),
+      [
+        `${progress}/${total === Infinity ? "-" : total}`,
+        remainingSeconds === Infinity ? "--:--" : [
+          `${Math.floor(remainingSeconds / 60)}`.padStart(2, "0"),
+          `${Math.floor(remainingSeconds % 60)}`.padStart(2, "0"),
+        ].join(":"),
+      ].join(" ").padStart(25),
       `[${"#".repeat(progressPercent).padEnd(100, "-")}]`,
       `${progressPercent}%`.toString().padStart(4, " "),
     );
