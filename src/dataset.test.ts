@@ -9,11 +9,11 @@ export const exampleDataset: Dataset = {
     { personCount: 4, teamCount: 1 },
   ],
   pizzas: [
-    { id: 0, ingredients: ["onion", "pepper", "olive"] },
-    { id: 1, ingredients: ["mushroom", "tomato", "basil"] },
-    { id: 2, ingredients: ["chicken", "mushroom", "pepper"] },
-    { id: 3, ingredients: ["tomato", "mushroom", "basil"] },
-    { id: 4, ingredients: ["chicken", "basil"] },
+    { id: 0, ingredients: [0, 1, 2] },
+    { id: 1, ingredients: [3, 4, 5] },
+    { id: 2, ingredients: [6, 3, 1] },
+    { id: 3, ingredients: [4, 3, 5] },
+    { id: 4, ingredients: [6, 5] },
   ],
 };
 

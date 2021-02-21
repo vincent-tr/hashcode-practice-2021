@@ -14,12 +14,13 @@ export type Team = {
 
 export type Pizza = {
   id: number;
-  ingredients: string[];
+  ingredients: number[];
 };
 
 export async function readDataset(inputFilePath: string): Promise<Dataset> {
   const input = await Deno.readTextFile(inputFilePath);
   const [teamsLine, ...pizzasLines] = trimLines(input.split("\n"));
+  ingredientMap.clear();
   return {
     name: inputFilePath.split(SEP).pop()!,
     teams: parseTeams(teamsLine),
@@ -55,12 +56,11 @@ export function countTotalPizzas({ pizzas }: Dataset) {
   return pizzas.length;
 }
 
-export function countTotalIngredients({ pizzas }: Dataset) {
-  return pizzas.reduce((ingredients, pizza) => {
-    pizza.ingredients.forEach((ingredient) => ingredients.add(ingredient));
-    return ingredients;
-  }, new Set<string>()).size;
+export function countTotalIngredients(_: Dataset) {
+  return ingredientMap.size;
 }
+
+let ingredientMap = new Map<string, number>();
 
 function parseTeams(line: string): Team[] {
   return line.split(" ")
@@ -75,6 +75,13 @@ function parseTeams(line: string): Team[] {
 function parsePizza(line: string, pizzaId: number): Pizza {
   return {
     id: pizzaId,
-    ingredients: line.split(" ").slice(1),
+    ingredients: line.split(" ").slice(1).map((ingredientString) => {
+      let ingredient = ingredientMap.get(ingredientString);
+      if (ingredient === undefined) {
+        ingredient = ingredientMap.size;
+        ingredientMap.set(ingredientString, ingredient);
+      }
+      return ingredient;
+    }),
   };
 }

@@ -25,7 +25,7 @@ self.onmessage = async ({ data: dataset }: MessageEvent<Dataset>) => {
       teamIdx++
     ) {
       const pizzasToDeliver: Pizza[] = [];
-      const ingredients = new Set<string>();
+      const ingredients = new Set<number>();
       for (
         let personIdx = 0;
         personIdx < personCount && pizzaIdx < pizzas.length;

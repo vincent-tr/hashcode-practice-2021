@@ -4,6 +4,7 @@ import {
   Dataset,
   Pizza,
 } from "../dataset.ts";
+import { NumberSet } from "../helpers/number_set.ts";
 import { SolverProgress } from "../helpers/solver.ts";
 import { Submission } from "../submission.ts";
 
@@ -18,6 +19,7 @@ self.onmessage = async ({ data: dataset }: MessageEvent<Dataset>) => {
   self.postMessage(progress);
   teams.reverse();
   let pizzas = toLinkedList(dataset.pizzas);
+  const ingredients = new NumberSet(10000);
   for (const { personCount, teamCount } of teams) {
     // TODO Monte-Carlo on teams order
     for (let teamIdx = 0; teamIdx < teamCount && pizzas; teamIdx++) {
@@ -28,18 +30,22 @@ self.onmessage = async ({ data: dataset }: MessageEvent<Dataset>) => {
         break;
       }
       const pizzasToDeliver: Pizza[] = [];
-      const ingredients = new Set<string>();
+      ingredients.clear();
+      let ingredientCount = 0;
       for (let personIdx = 0; personIdx < personCount && pizzas; personIdx++) {
         const pizza = pizzas.pizza;
         pizzasToDeliver.push(pizza);
         pizzas = pizzas.next;
         for (const ingredient of pizza.ingredients) {
-          ingredients.add(ingredient);
+          if (!ingredients.has(ingredient)) {
+            ingredients.add(ingredient);
+            ingredientCount++;
+          }
         }
       }
       if (pizzasToDeliver.length === personCount) {
         submission.deliveries.push({
-          score: ingredients.size * ingredients.size,
+          score: ingredientCount * ingredientCount,
           pizzas: pizzasToDeliver,
         });
         if (teamIdx % 10 === 0) {
