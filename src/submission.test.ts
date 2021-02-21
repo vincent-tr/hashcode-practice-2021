@@ -1,5 +1,5 @@
-import { assertEquals } from "https://deno.land/std@0.87.0/testing/asserts.ts";
 import { exampleDataset } from "./dataset.test.ts";
+import { assertEquals } from "./deps.ts";
 import { getSubmissionInfo, Submission } from "./submission.ts";
 
 export const exampleSubmission: Submission = {

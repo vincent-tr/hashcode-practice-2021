@@ -1,4 +1,4 @@
-import { SEP } from "https://deno.land/std@0.87.0/path/separator.ts";
+import { SEP } from "./deps.ts";
 import { trimLines } from "./helpers/string.ts";
 
 export type Dataset = {
