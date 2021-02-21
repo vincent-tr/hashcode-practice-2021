@@ -56,8 +56,11 @@ export function countTotalPizzas({ pizzas }: Dataset) {
   return pizzas.length;
 }
 
-export function countTotalIngredients(_: Dataset) {
-  return ingredientMap.size;
+export function countTotalIngredients({ pizzas }: Dataset) {
+  return pizzas.reduce((ingredients, pizza) => {
+    pizza.ingredients.forEach((ingredient) => ingredients.add(ingredient));
+    return ingredients;
+  }, new Set<number>()).size;
 }
 
 let ingredientMap = new Map<string, number>();
