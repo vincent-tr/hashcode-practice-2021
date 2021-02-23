@@ -1,14 +1,9 @@
-import {
-  countTotalPeople,
-  countTotalPizzas,
-  Dataset,
-  Pizza,
-} from "../dataset.ts";
+import { Dataset } from "../dataset.ts";
 import { SolverProgress } from "../helpers/solver.ts";
 import { Submission } from "../submission.ts";
 
 self.onmessage = async ({ data: dataset }: MessageEvent<Dataset>) => {
-  const { name, teams, pizzas } = dataset;
+  const { name } = dataset;
   const maxPizzaCount = Math.min(
     countTotalPeople(dataset),
     countTotalPizzas(dataset),

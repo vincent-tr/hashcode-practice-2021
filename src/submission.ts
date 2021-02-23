@@ -1,13 +1,14 @@
-import { Pizza } from "./dataset.ts";
+import { Dataset } from "./dataset.ts";
 
 export type Submission = {
   name: string;
-  deliveries: Delivery[];
+  dataset: Dataset;
+  scans: LibraryScan[];
 };
 
-export type Delivery = {
-  score: number;
-  pizzas: Pizza[];
+export type LibraryScan = {
+  library: number;
+  books: number[];
 };
 
 export async function writeSubmission(submission: Submission) {
@@ -18,10 +19,13 @@ export async function writeSubmission(submission: Submission) {
     // Submission directory already exists
   }
   const fileName = `${getSubmissionScore(submission)}.out`;
-  const lines = [
-    `${submission.deliveries.length}`,
-    ...submission.deliveries.map(formatDelivery),
-  ];
+  const lines = [`${submission.scans.length}`];
+
+  for (const scan of submission.scans) {
+    lines.push(`${scan.library} ${scan.books.length}`);
+    lines.push(scan.books.join(" "));
+  }
+
   await Deno.writeTextFile(`${submissionDir}/${fileName}`, lines.join("\n"));
 }
 
@@ -29,7 +33,7 @@ export function getSubmissionInfo(submission: Submission) {
   const score = getSubmissionScore(submission);
   return {
     "Dataset": `${submission.name}`,
-    "Deliveries": submission.deliveries.length,
+    "Scans": submission.scans.length,
     "Score": score,
     "Submission file": `${getSubmissionDirectory(submission)}/${score}.out`,
   };
@@ -39,10 +43,18 @@ function getSubmissionDirectory({ name }: Submission): string {
   return `submission/${name}`;
 }
 
-function getSubmissionScore({ deliveries }: Submission): number {
-  return deliveries.reduce((score, delivery) => score + delivery.score, 0);
-}
+function getSubmissionScore(submission: Submission): number {
+  const bookIds = new Set<number>();
+  for (const scan of submission.scans) {
+    for (const book of scan.books) {
+      bookIds.add(book);
+    }
+  }
 
-function formatDelivery({ pizzas }: Delivery): string {
-  return `${pizzas.length} ${pizzas.map(({ id }) => id).join(" ")}`;
+  let score = 0;
+  for (const book of bookIds) {
+    score += submission.dataset.booksScores[book];
+  }
+
+  return score;
 }
