@@ -28,7 +28,7 @@ export async function readDataset(inputFilePath: string): Promise<Dataset> {
       libsLines[i * 2],
     );
 
-    const books = parseIntegerLine(libsLines[i * 2] + 1);
+    const books = parseIntegerLine(libsLines[i * 2 + 1]);
 
     libraries[i] = { signupProcessDays, booksPerDay, books };
   }

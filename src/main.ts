@@ -7,6 +7,7 @@ import {
 import { getSubmissionInfo, writeSubmission } from "./submission.ts";
 
 const datasets = await Promise.all(Deno.args.map(readDataset));
+
 const datasetInfos = datasets.map(getDatasetInfo);
 const allProgress: SolverProgress[] = [];
 const intervalId = setInterval(printProgress, 1000);
@@ -15,7 +16,6 @@ const submissions = await Promise.all(datasets.map(async (dataset) => {
   const [submissionPromise, progress] = solveWorker(dataset, "minimal");
   allProgress.push(progress);
   const submission = await submissionPromise;
-  submission.dataset = dataset;
   writeSubmission(submission);
   return submission;
 }));
